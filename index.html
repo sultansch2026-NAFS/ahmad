@@ -70,7 +70,7 @@
             color: var(--accent-silver);
         }
 
-        .ministry-identity {
+        .sidebar-brand {
             text-align: left;
             font-size: 0.85rem;
             color: var(--accent-silver);
@@ -362,6 +362,24 @@
         .option-item.correct-ans .option-badge { background-color: var(--neon-green); color: var(--bg-primary); }
         .option-item.wrong-ans .option-badge { background-color: var(--neon-red); color: white; }
 
+        /* حاوية التغذية الراجعة الفورية */
+        .feedback-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .feedback-success { background: rgba(57, 255, 20, 0.15); border: 1.5px solid var(--neon-green); color: #39ff14; }
+        .feedback-danger { background: rgba(255, 56, 56, 0.15); border: 1.5px solid var(--neon-red); color: #ff3838; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .progress-bar-container {
             width: 100%;
             height: 8px;
@@ -466,7 +484,7 @@
                 <p>بوابة التقييم والتدريب الأكاديمي الرقمي</p>
             </div>
         </div>
-        <div class="ministry-identity">
+        <div class="sidebar-brand">
             <p>وزارة التعليــم</p>
             <p style="font-weight: bold; color: var(--platinum);">التحول الرقمي التعليمي</p>
         </div>
@@ -478,9 +496,8 @@
             <span>مرحباً بكم في منصة التدريب والتقييم الذكي</span>
         </div>
         <p class="welcome-text">
-            أعزاءنا المعلمين والطلاب، نسعد بوجودكم في هذه المنصة التدريبية المخصصة لاختبارات نافس والترخيص المهني. لقد تم تصميم هذا النظام ليعمل بذكاء على فرز الأسئلة عشوائياً وتوليد 20 فقرة مخصصة في كل محاولة لدعم مهاراتكم وسد الفجوات التعليمية بكفاءة عالية واحترافية.
+            أعزاءنا المعلمين والطلاب، نسعد بوجودكم في هذه المنصة التدريبية المخصصة لاختبارات نافس والترخيص المهني. لقد تم تصميم هذا النظام ليعمل بذكاء على فرز الأسئلة والخيارات عشوائياً وتوليد 20 فقرة مخصصة في كل محاولة لدعم مهاراتكم وسد الفجوات التعليمية بكفاءة عالية واحترافية.
         </p>
-        <!-- تعديل المسمى هنا إلى مدير المجمع -->
         <div class="principal-signature">
             مدير مجمع الأمير سلطان الابتدائي: أ. أحمد بن صالح المنمص
         </div>
@@ -582,6 +599,7 @@
             <div class="question-container">
                 <div class="question-text" id="question-text">جاري تحميل السؤال الأول...</div>
                 <div class="options-list" id="options-list"></div>
+                <div id="feedback-display" class="feedback-box"></div>
             </div>
 
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
@@ -673,7 +691,7 @@
                     { q: "عند التعامل مع طالب يظهر تراجعاً مفاجئاً في المستوى التحصيلي، ما الخطوة الإرشادية الأولى؟", o: ["دراسة الحالة الفردية للطالب والبحث في الأسباب الأكاديمية والبيئية", "تحويل الطالب مباشرة إلى إدارة المدرسة للعقاب", "تجاهل المشكلة حتى تحل تلقائياً", "لوم الطالب وتوبيخه أمام الزملاء"], a: 0 }
                 ],
                 leadership: [
-                    { q: "أي من الأساليب القيادية يعتمد على إشراك منسوبي المدرسة في اتخاذ القرار وبناء الرؤية المشتركة؟", o: ["القيادة التشاركية (الديمقراطية)", "القيادة الأوتوقراطية (المتسلطة)", "القيادة الفوضوية (الحرة)", "القيادة الإجرائية التقليدية"], a: 0 }
+                    { q: "أي من الأساليب القيادية يعتمد على إشراك منسوبي المدرسة في اتخاذ القرار وبناء الرؤية المشتركة Regel؟", o: ["القيادة التشاركية (الديمقراطية)", "القيادة الأوتوقراطية (المتسلطة)", "القيادة الفوضوية (الحرة)", "القيادة الإجرائية التقليدية"], a: 0 }
                 ]
             }
         };
@@ -687,6 +705,7 @@
         let timeRemaining = 1800;
         let isQuestionAnswered = false;
         let score = 0;
+        let randomizedOptions = []; // مصفوفة لتخزين خيارات السؤال الحالي بعد الخلط
 
         const subjectsConfig = {
             "3": [
@@ -838,6 +857,11 @@
         function showQuestion() {
             isQuestionAnswered = false;
             document.getElementById('next-btn').style.visibility = 'hidden';
+            
+            // إخفاء صندوق التغذية الراجعة
+            const feedbackBox = document.getElementById('feedback-display');
+            feedbackBox.style.display = 'none';
+            feedbackBox.className = 'feedback-box';
 
             const currentQ = generatedQuestions[currentQuestionIndex];
             document.getElementById('question-text').innerText = `س ${currentQuestionIndex + 1}: ${currentQ.q}`;
@@ -845,12 +869,22 @@
             const optionsList = document.getElementById('options-list');
             optionsList.innerHTML = '';
 
+            // إعداد الخيارات وخلطها عشوائياً مع الاحتفاظ بمعرفة الإجابة الصحيحة الأصلية
+            const originalCorrectText = currentQ.o[currentQ.a];
+            
+            // عمل نسخة من الخيارات وخلطها
+            randomizedOptions = [...currentQ.o].sort(() => 0.5 - Math.random());
+
             const badges = ['أ', 'ب', 'ج', 'د'];
-            currentQ.o.forEach((option, idx) => {
+            randomizedOptions.forEach((option, idx) => {
                 const item = document.createElement('div');
                 item.className = 'option-item';
                 item.innerHTML = `<div class="option-badge">${badges[idx]}</div> <span>${option}</span>`;
-                item.onclick = () => selectOption(idx, item);
+                
+                // التحقق مما إذا كان هذا الخيار المخلط هو الإجابة الصحيحة نصياً
+                const isItCorrect = (option === originalCorrectText);
+                
+                item.onclick = () => selectOption(isItCorrect, item);
                 optionsList.appendChild(item);
             });
 
@@ -858,25 +892,36 @@
             document.getElementById('progress-bar').style.width = `${progress}%`;
         }
 
-        function selectOption(selectedIdx, element) {
+        function selectOption(isCorrect, element) {
             if(isQuestionAnswered) return; 
             
             isQuestionAnswered = true;
             const currentQ = generatedQuestions[currentQuestionIndex];
+            const originalCorrectText = currentQ.o[currentQ.a];
             const allItems = document.querySelectorAll('.option-item');
+            const feedbackBox = document.getElementById('feedback-display');
 
-            allItems.forEach((item, idx) => {
+            // تمييز الإجابات فورياً وتجميدها
+            allItems.forEach((item) => {
                 item.classList.add('locked');
-                if(idx === currentQ.a) {
-                    item.classList.add('correct-ans'); 
+                const itemText = item.querySelector('span').innerText;
+                if(itemText === originalCorrectText) {
+                    item.classList.add('correct-ans'); // إبراز الإجابة الصحيحة باللون الأخضر فوراً
                 }
             });
 
-            if(selectedIdx === currentQ.a) {
+            // تحديث النتيجة والتغذية الراجعة الفورية
+            if(isCorrect) {
                 score++;
+                element.classList.add('correct-ans');
+                feedbackBox.innerText = "✨ إجابة صحيحة! أحسنت صنعاً، استمر في التقدم.";
+                feedbackBox.classList.add('feedback-success');
             } else {
-                element.classList.add('wrong-ans'); 
+                element.classList.add('wrong-ans'); // تمييز الإجابة المحددة الخاطئة باللون الأحمر فوراً
+                feedbackBox.innerText = `❌ إجابة خاطئة! الإجابة الصحيحة هي: (${originalCorrectText})`;
+                feedbackBox.classList.add('feedback-danger');
             }
+            feedbackBox.style.display = 'block';
 
             const nextBtn = document.getElementById('next-btn');
             if(currentQuestionIndex === generatedQuestions.length - 1) {
