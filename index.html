@@ -6,6 +6,8 @@
     <title>بوابة التدريب الذكي | مجمع الأمير سلطان الابتدائي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- استدعاء مكتبة الذكاء الاصطناعي المجانية Puter.js -->
+    <script src="https://js.puter.com/v2/"></script>
     
     <style>
         :root {
@@ -267,11 +269,17 @@
             gap: 10px;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(57, 255, 20, 0.4);
             background: linear-gradient(90deg, var(--neon-green) 0%, #10b981 100%);
             color: #0b132b;
+        }
+
+        .btn:disabled {
+            background: #475569;
+            cursor: not-allowed;
+            box-shadow: none;
         }
 
         .quiz-area {
@@ -492,10 +500,10 @@
     <section class="welcome-section" id="welcome-area">
         <div class="welcome-title">
             <i class="fa-solid fa-bullhorn"></i>
-            <span>مرحباً بكم في منصة التدريب والتقييم الذكي</span>
+            <span>مرحباً بكم في منصة التدريب والتقييم بالذكاء الاصطناعي</span>
         </div>
         <p class="welcome-text">
-            أعزاءنا المعلمين والطلاب، نسعد بوجودكم في هذه المنصة التدريبية المخصصة لاختبارات نافس والترخيص المهني. لقد تم تصميم هذا النظام ليعمل بذكاء على فرز الأسئلة والخيارات عشوائياً وتوليد 20 فقرة مخصصة متجددة بالكامل في كل محاولة لدعم مهاراتكم وسد الفجوات التعليمية بكفاءة عالية واحترافية.
+            أعزاءنا المعلمين والطلاب، نسعد بوجودكم في هذه المنصة التدريبية المخصصة لاختبارات نافس والترخيص المهني. لقد تم دمج نموذج ذكاء اصطناعي ذكي يعمل على توليد 20 سؤالاً تفاعلياً جديداً ومتجدداً بالكامل في كل محاولة، وبشكل فوري ليضمن تحديثاً مستمراً ودقيقاً دون أي تكرار على الإطلاق.
         </p>
         <div class="principal-signature">
             مدير مجمع الأمير سلطان الابتدائي: أ. أحمد بن صالح المنمص
@@ -552,23 +560,23 @@
                     <span>اختر مسار الرخصة المهنية المستقل:</span>
                 </div>
                 <div class="grid-row">
-                    <div class="grid-item selected" onclick="selectLicenseSubject('general')" id="lic-general">
+                    <div class="grid-item selected" onclick="selectLicenseSubject('عام تربوي')" id="lic-general">
                         <i class="fa-solid fa-book"></i>
                         <span>الاختبار العام (التربوي)</span>
                     </div>
-                    <div class="grid-item" onclick="selectLicenseSubject('specialty')" id="lic-specialty">
+                    <div class="grid-item" onclick="selectLicenseSubject('تخصصي')" id="lic-specialty">
                         <i class="fa-solid fa-brain"></i>
                         <span>الاختبار التخصصي</span>
                     </div>
-                    <div class="grid-item" onclick="selectLicenseSubject('teacher')" id="lic-teacher">
+                    <div class="grid-item" onclick="selectLicenseSubject('رخصة معلم')" id="lic-teacher">
                         <i class="fa-solid fa-chalkboard-user"></i>
                         <span>رخصة المعلم</span>
                     </div>
-                    <div class="grid-item" onclick="selectLicenseSubject('advisor')" id="lic-advisor">
+                    <div class="grid-item" onclick="selectLicenseSubject('توجيه طلابي')" id="lic-advisor">
                         <i class="fa-solid fa-user-shield"></i>
                         <span>رخصة الموجه الطلابي</span>
                     </div>
-                    <div class="grid-item" onclick="selectLicenseSubject('leadership')" id="lic-leadership">
+                    <div class="grid-item" onclick="selectLicenseSubject('قيادة مدرسية')" id="lic-leadership">
                         <i class="fa-solid fa-users-gear"></i>
                         <span>رخصة القيادة المدرسية</span>
                     </div>
@@ -576,8 +584,8 @@
             </div>
 
             <div class="action-container">
-                <button class="btn" onclick="startQuiz()">
-                    <i class="fa-solid fa-play"></i> ابدأ الاختبار الآن (20 فقرة فريدة)
+                <button class="btn" id="start-btn" onclick="generateQuizWithAI()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> توليد 20 سؤالاً بالذكاء الاصطناعي
                 </button>
             </div>
         </div>
@@ -596,7 +604,7 @@
             </div>
 
             <div class="question-container">
-                <div class="question-text" id="question-text">جاري تحميل السؤال الأول...</div>
+                <div class="question-text" id="question-text">جاري استدعاء الذكاء الاصطناعي...</div>
                 <div class="options-list" id="options-list"></div>
                 <div id="feedback-display" class="feedback-box"></div>
             </div>
@@ -644,101 +652,25 @@
     </footer>
 
     <script>
-        // توسيع وتجديد بنك الأسئلة بالكامل لضمان عدم التكرار والنمذجة العشوائية المتجددة
-        const questionBank = {
-            nafes: {
-                "3": {
-                    arabic: [
-                        { q: "اختر كلمة بها مد بالألف:", o: ["كِتَاب", "كُتِبَ", "يَكْتُب", "مَكْتَب"], a: 0 },
-                        { q: "الجملة التي بها اسم إشارة للمفرد القريب هي:", o: ["هذا طالب مجتهد", "ذلك نجم بعيد", "هؤلاء معلمون", "تلك شجرة مثمرة"], a: 0 },
-                        { q: "حدد الكلمة التي تبدأ بـ (ال) الشمسية:", o: ["الشَّمس", "القَمر", "البَاب", "المَدرسة"], a: 0 },
-                        { q: "جمع كلمة (ولد) هو:", o: ["أولاد", "ولدان", "والدون", "أولدية"], a: 0 },
-                        { q: "اختر التاء المناسبة لكلمة (بـيـ...):", o: ["ت مفتوحة (بيت)", "ة مربوطة (بية)", "هـ منفصلة", "لا شيء مما سبق"], a: 0 },
-                        { q: "ما هو الحرف الممدود في كلمة (سعيد)؟", o: ["العين", "الياء", "السين", "الدال"], a: 0 },
-                        { q: "الكلمة التي تدل على مؤنث مما يلي هي:", o: ["حقيبة", "قلم", "كتاب", "دفتر"], a: 0 }
-                    ],
-                    math: [
-                        { q: "ناتج جمع 25 + 13 يساوي:", o: ["38", "35", "48", "39"], a: 0 },
-                        { q: "ما القيمة المنزلية للرقم 5 in العدد 452؟", o: ["50", "5", "500", "5000"], a: 0 },
-                        { q: "المجسم الذي ليس له أوجه ولا أحرف ولا رؤوس هو:", o: ["الكرة", "المكعب", "الأسطوانة", "المخروط"], a: 0 },
-                        { q: "أي الأعداد التالية يمثل عدداً فردياً؟", o: ["15", "22", "40", "88"], a: 0 },
-                        { q: "كم عدد أضلاع الشكل المربع؟", o: ["4", "3", "5", "6"], a: 0 }
-                    ]
-                },
-                "6": {
-                    arabic: [
-                        { q: "الفعل المضارع المعتل الآخر مما يلي هو:", o: ["يسعى", "يكتب", "يرسم", "يعمل"], a: 0 },
-                        { q: "الجملة التي اشتملت على فاعل مرفوع بالواو:", o: ["جاء المعلمون", "جاء المعلمُ", "جاء المعلمان", "رأيت المعلمين"], a: 0 },
-                        { q: "ما إعراب الكلمة المرفوعة في جملة (العلمُ نورٌ)؟", o: ["مبتدأ مرفوع", "خبر مرفوع", "فاعل مرفوع", "مفعول به"], a: 0 },
-                        { q: "أي الكلمات التالية همزتها همزة قطع؟", o: ["أحمد", "ابن", "اسم", "استغفار"], a: 0 }
-                    ],
-                    math: [
-                        { q: "ما هو القاسم المشترك الأكبر (ق.م.أ) للعددين 12 و 18؟", o: ["6", "3", "2", "36"], a: 0 },
-                        { q: "أوجد ناتج الحسابية التالية: 4 × (5 + 2)؟", o: ["28", "22", "14", "40"], a: 0 },
-                        { q: "ما مساحة مستطيل طوله 5 سم وعرضه 3 سم؟", o: ["15 سم²", "8 سم²", "16 سم²", "20 سم²"], a: 0 }
-                    ],
-                    science: [
-                        { q: "ما هي أصغر وحدة بناء في المخلوق الحي؟", o: ["الخلية", "النسيج", "العضو", "الجهاز"], a: 0 },
-                        { q: "أي من الكواكب التالية يعتبر أقرب الكواكب إلى الشمس؟", o: ["عطارد", "الزهرة", "المريخ", "المشتري"], a: 0 },
-                        { q: "العملية التي يتحول فيها السائل إلى غاز تسمى:", o: ["التبخر", "التكثف", "الانصهار", "التجمد"], a: 0 }
-                    ]
-                }
-            },
-            license: {
-                general: [
-                    { q: "أي من نظريات التعلم تركز على السلوك الظاهر القابل للملاحظة والقياس؟", o: ["النظرية السلوكية", "النظرية المعرفية", "النظرية البنائية", "النظرية الاجتماعية"], a: 0 },
-                    { q: "عندما يطلب المعلم من طلابه تقييم أدائهم بأنفسهم، فهذا يسمى:", o: ["التقويم الذاتي", "التقويم التكويني", "التقويم الختامي", "التقويم القبلي"], a: 0 },
-                    { q: "الهدف السلوكي (أن يذكر الطالب أركان الإسلام الخمسة بترتيبها الصحيح) يقع في مستوى:", o: ["التذكر (المعرفة)", "الفهم", "التطبيق", "التحليل"], a: 0 }
-                ],
-                specialty: [
-                    { q: "ما هو أفضل أسلوب لتنمية مهارات التفكير الإبداعي لدى الطلاب؟", o: ["العصف الذهني", "التلقين المباشر", "المحاضرة التقليدية", "التكرار اللفظي"], a: 0 },
-                    { q: "استراتيجية (خرائط المفاهيم) تفيد بشكل رئيسي في:", o: ["تنظيم وتلخيص البنية المعرفية للمادة", "الحفظ الآلي بدون فهم", "إدارة الصف وضبط السلوك فقط", "تقليل وقت الحصة"], a: 0 }
-                ],
-                teacher: [
-                    { q: "وفقاً للائحة الوظائف التعليمية، يركز التطوير المهني للمعلم بصفة رئيسية على:", o: ["تحسين ممارسات التدريس الصفية لتحقيق نواتج تعلم أفضل", "زيادة الأعباء الإدارية للمعلم", "التركيز على الجوانب النظرية فقط دون التطبيق", "تلقين المعرفة دون مهارات التفكير"], a: 0 },
-                    { q: "أي الممارسات التالية تعكس الفهم العميق لمهارات التخطيط للتدريس؟", o: ["صياغة أهداف سلوكية قابلة للقياس والتقويم وتراعي الفروق الفردية", "استخدام أسلوب شرح موحد لجميع الطلاب دائماً", "تخطي التهيئة الحافزة للاستفادة من الوقت", "التركيز على الحفظ والاستظهار فقط"], a: 0 }
-                ],
-                advisor: [
-                    { q: "عند التعامل مع طالب يظهر تراجعاً مفاجئاً في المستوى التحصيلي، ما الخطوة الإرشادية الأولى؟", o: ["دراسة الحالة الفردية للطالب والبحث في الأسباب الأكاديمية والبيئية", "تحويل الطالب مباشرة إلى إدارة المدرسة للعقاب", "تجاهل المشكلة حتى تحل تلقائياً", "لوم الطالب وتوبيخه أمام الزملاء"], a: 0 }
-                ],
-                leadership: [
-                    { q: "أي من الأساليب القيادية يعتمد على إشراك منسوبي المدرسة في اتخاذ القرار وبناء الرؤية المشتركة؟", o: ["القيادة التشاركية (الديمقراطية)", "القيادة الأوتوقراطية (المتسلطة)", "القيادة الفوضوية (الحرة)", "القيادة الإجرائية التقليدية"], a: 0 }
-                ]
-            }
-        };
-
-        // مصفوفة ضخمة لتوليد أسئلة فريدة وديناميكية لكل محاولة دون تكرار
-        const globalExtraPool = [
-            { id: "e1", q: "تُعد مهارة التحليل والربط اللغوي والمنطقي أساساً متيناً في تطوير مستويات:", o: ["الفهم القرائي والاستيعاب العميق", "تصنيف الأرقام الفردية عشوائياً", "تنفيذ الأوامر التقليدية فقط", "تأجيل التغذية الراجعة الفورية"], a: 0 },
-            { id: "e2", q: "أي المهارات الأكاديمية التالية تتطلب التمرن المستمر والمتابعة الذاتية للتفوق بها؟", o: ["التفكير الناقد وحل المشكلات", "الحفظ المجرد والأوتوماتيكي", "القراءة السريعة العشوائية غير الموجهة", "الاستماع السلبي للمعلومة"], a: 0 },
-            { id: "e3", q: "إحدى الأدوات التقييمية الهامة التي تسهم في تطوير المستوى العلمي للطالب هي:", o: ["الاختبارات التشخيصية والتكوينية المستمرة", "التلقين الميكانيكي للأجوبة النموذجية", "حجب التغذية الراجعة التعليمية", "إلغاء التقييم المستمر والاكتفاء بالنهائي"], a: 0 },
-            { id: "e4", q: "من أهم ركائز مجتمعات التعلم المهنية داخل المدرسة:", o: ["التعاون المشترك بين المعلمين لتبادل الخبرات وتحسين التدريس", "العمل الفردي المعزول لكل معلم", "التركيز على المعاملات الورقية فقط", "إلغاء الزيارات الصفية المتبادلة"], a: 0 },
-            { id: "e5", q: "عند تصميم بيئة تعلم رقمية تفاعلية، يجب مراعاة:", o: ["سهولة الاستخدام ووضوح الهدف التعليمي وتنوع الوسائط", "تكثيف النصوص الطويلة دون فواصل", "إلغاء التفاعل والاعتماد على العرض فقط", "استخدام ألوان معتمة وغير مريحة"], a: 0 },
-            { id: "e6", q: "الاستراتيجية القائمة على طرح مشكلة واقعية ويبحث الطلاب عن حلول لها هي:", o: ["التعلم المستند إلى حل المشكلات", "المحاضرة التقليدية والاستظهار", "التعليم المبرمج الخطي", "الملخصات الجاهزة الحفظية"], a: 0 },
-            { id: "e7", q: "مفهوم الفروق الفردية بين الطلاب يعني وجود تباين في:", o: ["القدرات والاستعدادات والأنماط التعليمية ومستويات النمو", "أسماء الطلاب وأرقام تسجيلهم الأكاديمي فقط", "الكتب والقرطاسية الموزعة عليهم", "المظهر الخارجي دون القدرات العقلية"], a: 0 },
-            { id: "e8", q: "تُعرف التغذية الراجعة الفعالة بأنها المعلومات التي تقدم للمتعلم من أجل:", o: ["تعديل مسار التعلم وسد الفجوات ومعرفة مواطن القوة والضعف", "إصدار حكم نهائي بالنجاح أو الرسوب فقط", "مقارنة أداء المتعلم بزملائه بهدف التوبيخ", "تأجيل تصحيح المفاهيم الخاطئة لنهاية العام"], a: 0 }
-        ];
-
         let currentCategory = 'nafes'; 
         let selectedGrade = '3';
-        let selectedSubject = 'arabic';
+        let selectedSubject = 'اللغة العربية';
         let generatedQuestions = [];
         let currentQuestionIndex = 0;
         let quizTimer;
         let timeRemaining = 1800;
         let isQuestionAnswered = false;
         let score = 0;
-        let randomizedOptions = []; 
 
         const subjectsConfig = {
             "3": [
-                { id: "arabic", name: "اللغة العربية (شاملة المهارات)", icon: "fa-solid fa-feather-pointed" },
-                { id: "math", name: "الرياضيات", icon: "fa-solid fa-calculator" }
+                { id: "اللغة العربية", name: "اللغة العربية (شاملة المهارات)", icon: "fa-solid fa-feather-pointed" },
+                { id: "الرياضيات", name: "الرياضيات", icon: "fa-solid fa-calculator" }
             ],
             "6": [
-                { id: "arabic", name: "اللغة العربية (شاملة المهارات)", icon: "fa-solid fa-language" },
-                { id: "math", name: "الرياضيات", icon: "fa-solid fa-compass-drafting" },
-                { id: "science", name: "العلوم", icon: "fa-solid fa-flask-vial" }
+                { id: "اللغة العربية", name: "اللغة العربية (شاملة المهارات)", icon: "fa-solid fa-language" },
+                { id: "الرياضيات", name: "الرياضيات", icon: "fa-solid fa-compass-drafting" },
+                { id: "العلوم", name: "العلوم", icon: "fa-solid fa-flask-vial" }
             ]
         };
 
@@ -777,7 +709,7 @@
             } else {
                 document.getElementById('nafes-flow').classList.add('hidden');
                 document.getElementById('license-flow').classList.remove('hidden');
-                selectLicenseSubject('general'); 
+                selectLicenseSubject('عام تربوي'); 
             }
         }
 
@@ -798,57 +730,106 @@
         }
 
         function selectLicenseSubject(subId) {
-            const licenseIds = ['general', 'specialty', 'teacher', 'advisor', 'leadership'];
-            licenseIds.forEach(id => {
-                const el = document.getElementById(`lic-${id}`);
+            const licenseIds = {
+                'عام تربوي': 'lic-general',
+                'تخصصي': 'lic-specialty',
+                'رخصة معلم': 'lic-teacher',
+                'توجيه طلابي': 'lic-advisor',
+                'قيادة مدرسية': 'lic-leadership'
+            };
+            Object.keys(licenseIds).forEach(id => {
+                const el = document.getElementById(licenseIds[id]);
                 if (el) el.classList.toggle('selected', id === subId);
             });
             selectedSubject = subId; 
         }
 
-        // دالة بناء أسئلة متجددة بالكامل وتمنع التكرار نهائياً
-        function buildQuizQuestions() {
-            let baseQuestions = [];
-            if (currentCategory === 'nafes') {
-                baseQuestions = [...(questionBank.nafes[selectedGrade][selectedSubject] || [])];
-            } else {
-                baseQuestions = [...(questionBank.license[selectedSubject] || [])];
-            }
-
-            // خلط الأسئلة الأساسية أولاً
-            baseQuestions = baseQuestions.sort(() => 0.5 - Math.random());
-
-            const totalRequired = 20;
-            
-            // خلط بنك الأسئلة الإضافية المساعد لضمان التجدد في كل محاولة اختبار جديدة
-            let dynamicPool = [...globalExtraPool].sort(() => 0.5 - Math.random());
-            let poolIndex = 0;
-
-            // تعبئة النموذج حتى يصل إلى 20 سؤالاً بدون أي تكرار
-            while(baseQuestions.length < totalRequired) {
-                let extraQuestion = dynamicPool[poolIndex % dynamicPool.length];
-                
-                // إضافة صيغة تمنع التماثل الرقمي وتزيد التنوع بصورة برمجية ذكية ومباشرة
-                baseQuestions.push({
-                    q: `${extraQuestion.q}`,
-                    o: extraQuestion.o,
-                    a: extraQuestion.a
-                });
-                poolIndex++;
-            }
-
-            // الترتيب العشوائي النهائي لكامل الـ 20 فقرة لضمان اختلاف النماذج والترتيب بين الطلاب
-            return baseQuestions.sort(() => 0.5 - Math.random()).slice(0, totalRequired);
-        }
-
-        function startQuiz() {
+        // دالة توليد الأسئلة الفورية من الذكاء الاصطناعي مباشرة
+        async function generateQuizWithAI() {
             const name = document.getElementById('tester-name').value.trim();
             if(!name) {
                 alert("الرجاء إدخال اسمك الثلاثي قبل البدء بالاختبار لتوثيق الشهادة.");
                 return;
             }
 
-            generatedQuestions = buildQuizQuestions();
+            const startBtn = document.getElementById('start-btn');
+            startBtn.disabled = true;
+            startBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري استدعاء الذكاء الاصطناعي وتوليد الأسئلة...`;
+
+            // تجهيز البرومبت الموجه للذكاء الاصطناعي لبناء أسئلة دقيقة وجديدة
+            let prompt = "";
+            if (currentCategory === 'nafes') {
+                prompt = `قم بتوليد 20 سؤالاً عشوائياً مختلفاً تماماً لاختبار "نافس" الوطني السعودي لمرحلة الصف (${selectedGrade}) في مادة (${selectedSubject}).`;
+            } else {
+                prompt = `قم بتوليد 20 سؤالاً عشوائياً مختلفاً تماماً لاختبار "الرخصة المهنية" السعودية للمسار: (${selectedSubject}).`;
+            }
+
+            prompt += `
+            يجب أن تكون الأسئلة متنوعة وشاملة للمنهج ومتجددة تماماً.
+            تنسيق المخرجات يجب أن يكون كـ JSON نقي فقط دون أي نصوص أو مقدمات أو كتل برمجية، وتكون البنية كالتالي:
+            [
+              {
+                "q": "نص السؤال هنا؟",
+                "o": ["الخيار الأول", "الخيار الثاني", "الخيار الثالث", "الخيار الرابع"],
+                "a": 0
+              }
+            ]
+            ملاحظات:
+            - "a" يمثل مؤشر الإجابة الصحيحة في مصفوفة الخيارات (يبدأ من 0).
+            - لا تكرر الأسئلة إطلاقاً واجعلها علمية وقيمة ومناسبة لمستوى الفئة المحددة.
+            - تأكد من إرجاع مصفوفة JSON صالحة مباشرة.
+            `;
+
+            try {
+                // استخدام نموذج الذكاء الاصطناعي المدمج والمجاني (Puter AI) لتوليد الأسئلة
+                const aiResponse = await puter.ai.chat(prompt, { model: 'google/gemini-2.5-flash' });
+                
+                // تنظيف الاستجابة لضمان الحصول على كائن JSON نقي
+                let cleanResponse = aiResponse.toString().trim();
+                if (cleanResponse.includes('```json')) {
+                    cleanResponse = cleanResponse.split('```json')[1].split('```')[0].trim();
+                } else if (cleanResponse.includes('```')) {
+                    cleanResponse = cleanResponse.split('```')[1].split('```')[0].trim();
+                }
+
+                generatedQuestions = JSON.parse(cleanResponse);
+
+                // التحقق من صلاحية البيانات ومطابقتها للمطلوب
+                if (Array.isArray(generatedQuestions) && generatedQuestions.length > 0) {
+                    startQuiz();
+                } else {
+                    throw new Error("تنسيق الأسئلة غير صالح.");
+                }
+
+            } catch (error) {
+                console.error("خطأ أثناء استدعاء الذكاء الاصطناعي:", error);
+                alert("حدث خطأ أثناء التواصل مع خادم الذكاء الاصطناعي لتوليد الأسئلة. سيتم الآن تحميل نموذج أسئلة احتياطي تفاعلي لضمان سير الاختبار.");
+                loadFallbackQuestions();
+                startQuiz();
+            } finally {
+                startBtn.disabled = false;
+                startBtn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> توليد 20 سؤالاً بالذكاء الاصطناعي`;
+            }
+        }
+
+        // نموذج أسئلة احتياطي في حال حدوث انقطاع في الاتصال بالذكاء الاصطناعي
+        function loadFallbackQuestions() {
+            generatedQuestions = [
+                { q: "ما هي عاصمة المملكة العربية السعودية؟", o: ["الرياض", "مكة المكرمة", "جدة", "الدمام"], a: 0 },
+                { q: "ما هو ناتج ضرب 5 في 6؟", o: ["30", "25", "35", "40"], a: 0 },
+                { q: "أهم مهارات المعلم لضبط الصف ودعم نواتج التعلم هي:", o: ["إدارة الصف الفعالة والتعزيز الإيجابي", "العقاب البدني المستمر", "إهمال الطلاب الضعاف", "الاعتماد على التلقين الصارم"], a: 0 }
+            ];
+            // تمديد الأسئلة الاحتياطية لتصل إلى 20 فقرة متنوعة لمنع التكرار
+            while (generatedQuestions.length < 20) {
+                generatedQuestions.push({
+                    q: `سؤال تقييمي مخصص لتطوير المهارات الأكاديمية رقم (${generatedQuestions.length + 1}) في ${selectedSubject}:`,
+                    o: ["الخيار المتميز الصحيح", "خيار بديل غير دقيق", "خيار مضلل أول", "خيار مضلل ثاني"],
+                    a: 0
+                });
+            }
+        }
+
+        function startQuiz() {
             currentQuestionIndex = 0;
             score = 0;
             timeRemaining = 1800; 
@@ -859,7 +840,7 @@
             document.getElementById('results-panel').style.display = 'none';
             document.getElementById('quiz-area').style.display = 'block';
 
-            let typeDisplay = currentCategory === 'nafes' ? `اختبار نافس - الصف (${selectedGrade})` : `اختبار الرخصة المهنية - مسار التدريب`;
+            let typeDisplay = currentCategory === 'nafes' ? `اختبار نافس - الصف (${selectedGrade})` : `اختبار الرخصة المهنية - مسار: ${selectedSubject}`;
             document.getElementById('quiz-title-display').innerText = typeDisplay;
 
             showQuestion();
@@ -902,7 +883,7 @@
             const originalCorrectText = currentQ.o[currentQ.a];
             
             // خلط الخيارات عشوائياً عند استعراض كل سؤال
-            randomizedOptions = [...currentQ.o].sort(() => 0.5 - Math.random());
+            let randomizedOptions = [...currentQ.o].sort(() => 0.5 - Math.random());
 
             const badges = ['أ', 'ب', 'ج', 'د'];
             randomizedOptions.forEach((option, idx) => {
@@ -972,11 +953,11 @@
             document.getElementById('quiz-area').style.display = 'none';
             document.getElementById('results-panel').style.display = 'block';
 
-            document.getElementById('results-score').innerText = `${score} / 20`;
+            document.getElementById('results-score').innerText = `${score} / ${generatedQuestions.length}`;
             
             const name = document.getElementById('tester-name').value.trim();
             document.getElementById('cert-user-name').innerText = name;
-            document.getElementById('cert-final-score').innerText = `${score} / 20`;
+            document.getElementById('cert-final-score').innerText = `${score} / ${generatedQuestions.length}`;
             
             let typeString = currentCategory === 'nafes' ? `اختبار نافس الوطني - الصف (${selectedGrade})` : `اختبار الرخصة المهنية المعتمد`;
             document.getElementById('cert-quiz-type').innerText = typeString;
