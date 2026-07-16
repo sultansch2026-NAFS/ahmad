@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* نظام الألوان الفاخر: كحلي داكن، بلاتينيوم/فضي، أخضر فسفوري */
         :root {
             --bg-primary: #0b132b;
             --bg-secondary: #1c2541;
@@ -38,7 +37,6 @@
             overflow-x: hidden;
         }
 
-        /* رأس الصفحة والمظهر الرسمي */
         header {
             background: linear-gradient(135deg, var(--bg-secondary) 0%, #111a36 100%);
             border-bottom: 3px solid var(--accent-silver);
@@ -65,7 +63,6 @@
             font-size: 1.6rem;
             font-weight: 800;
             color: var(--platinum);
-            letter-spacing: 0.5px;
         }
 
         .header-title p {
@@ -81,7 +78,6 @@
             padding-right: 15px;
         }
 
-        /* رسالة الترحيب الرسمية */
         .welcome-section {
             max-width: 1100px;
             margin: 30px auto 10px auto;
@@ -92,7 +88,6 @@
             padding: 25px;
             box-shadow: var(--card-shadow);
             position: relative;
-            overflow: hidden;
         }
 
         .welcome-section::before {
@@ -116,7 +111,6 @@
 
         .welcome-text {
             line-height: 1.8;
-            color: var(--text-light);
             font-size: 1.05rem;
         }
 
@@ -125,10 +119,8 @@
             text-align: left;
             font-weight: 600;
             color: var(--accent-silver);
-            font-style: italic;
         }
 
-        /* حاوية العرض الرئيسية */
         .container {
             max-width: 1100px;
             margin: 20px auto;
@@ -136,7 +128,6 @@
             flex-grow: 1;
         }
 
-        /* تبويبات الأقسام الرئيسية */
         .main-tabs {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -153,44 +144,27 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--card-shadow);
-            position: relative;
         }
 
-        .tab-card:hover {
+        .tab-card:hover, .tab-card.active {
             border-color: var(--neon-green);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(57, 255, 20, 0.15);
+            transform: translateY(-2px);
         }
 
-        .tab-card.active {
-            border-color: var(--neon-green);
-            background: #1e294b;
-        }
+        .tab-card.active { background: #1e294b; }
 
         .tab-card i {
             font-size: 3rem;
             color: var(--platinum);
             margin-bottom: 15px;
-            transition: var(--transition);
         }
 
-        .tab-card:hover i {
-            color: var(--neon-green);
-        }
+        .tab-card.active i, .tab-card:hover i { color: var(--neon-green); }
 
-        .tab-card h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--platinum);
-        }
+        .tab-card h2 { font-size: 1.5rem; font-weight: 700; color: var(--platinum); }
 
-        .tab-card p {
-            font-size: 0.9rem;
-            color: var(--accent-silver);
-            margin-top: 8px;
-        }
+        .tab-card p { font-size: 0.9rem; color: var(--accent-silver); margin-top: 8px; }
 
-        /* قسم المواد والفصول */
         .selection-panel {
             background-color: var(--bg-secondary);
             border-radius: 15px;
@@ -234,27 +208,16 @@
             gap: 10px;
         }
 
-        .grid-item i {
-            font-size: 1.8rem;
-            color: var(--accent-silver);
-        }
-
-        .grid-item span {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
+        .grid-item i { font-size: 1.8rem; color: var(--accent-silver); }
+        .grid-item span { font-weight: 600; font-size: 0.95rem; }
 
         .grid-item:hover, .grid-item.selected {
             border-color: var(--neon-green);
             background: rgba(57, 255, 20, 0.05);
             color: #fff;
         }
+        .grid-item:hover i, .grid-item.selected i { color: var(--neon-green); }
 
-        .grid-item:hover i, .grid-item.selected i {
-            color: var(--neon-green);
-        }
-
-        /* حقل الاسم المستحدث */
         .name-input-container {
             background: rgba(11, 19, 43, 0.5);
             padding: 20px;
@@ -279,7 +242,6 @@
             color: white;
             font-size: 1.05rem;
             outline: none;
-            transition: var(--transition);
         }
 
         .tester-name-input:focus {
@@ -287,11 +249,7 @@
             box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
         }
 
-        /* أزرار الإجراءات */
-        .action-container {
-            text-align: center;
-            margin: 30px 0;
-        }
+        .action-container { text-align: center; margin: 30px 0; }
 
         .btn {
             background: linear-gradient(90deg, #10b981 0%, #059669 100%);
@@ -316,7 +274,6 @@
             color: #0b132b;
         }
 
-        /* نافذة الاختبار التفاعلية */
         .quiz-area {
             background-color: var(--bg-secondary);
             border-radius: 15px;
@@ -336,11 +293,7 @@
             border-bottom: 2px solid var(--accent-silver);
         }
 
-        .quiz-info {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--neon-green);
-        }
+        .quiz-info { font-size: 1.1rem; font-weight: 700; color: var(--neon-green); }
 
         .timer-box {
             font-size: 1.1rem;
@@ -354,10 +307,6 @@
             gap: 8px;
         }
 
-        .question-container {
-            margin-bottom: 25px;
-        }
-
         .question-text {
             font-size: 1.25rem;
             font-weight: 700;
@@ -366,11 +315,7 @@
             color: var(--platinum);
         }
 
-        .options-list {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
+        .options-list { display: grid; grid-template-columns: 1fr; gap: 15px; }
 
         .option-item {
             background: rgba(11, 19, 43, 0.5);
@@ -385,7 +330,6 @@
             font-weight: 600;
         }
 
-        /* حالات التصحيح الفوري والتجميد */
         .option-item:hover:not(.locked) {
             border-color: var(--neon-green);
             background: rgba(57, 255, 20, 0.05);
@@ -394,18 +338,14 @@
         .option-item.correct-ans {
             border-color: var(--neon-green) !important;
             background: rgba(57, 255, 20, 0.15) !important;
-            color: #fff !important;
         }
 
         .option-item.wrong-ans {
             border-color: var(--neon-red) !important;
             background: rgba(255, 56, 56, 0.15) !important;
-            color: #fff !important;
         }
 
-        .option-item.locked {
-            cursor: not-allowed;
-        }
+        .option-item.locked { cursor: not-allowed; }
 
         .option-badge {
             background-color: var(--bg-secondary);
@@ -417,23 +357,11 @@
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            font-size: 0.9rem;
-            border: 1px solid rgba(226, 232, 240, 0.2);
         }
 
-        .option-item.correct-ans .option-badge {
-            background-color: var(--neon-green);
-            color: var(--bg-primary);
-            border-color: var(--neon-green);
-        }
+        .option-item.correct-ans .option-badge { background-color: var(--neon-green); color: var(--bg-primary); }
+        .option-item.wrong-ans .option-badge { background-color: var(--neon-red); color: white; }
 
-        .option-item.wrong-ans .option-badge {
-            background-color: var(--neon-red);
-            color: white;
-            border-color: var(--neon-red);
-        }
-
-        /* شريط التقدم */
         .progress-bar-container {
             width: 100%;
             height: 8px;
@@ -450,7 +378,6 @@
             transition: width 0.3s ease;
         }
 
-        /* لوحة النتائج */
         .results-panel {
             background-color: var(--bg-secondary);
             border-radius: 15px;
@@ -469,7 +396,6 @@
             text-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
         }
 
-        /* تصميم شهادة الاجتياز الفاخرة */
         .certificate-wrapper {
             margin: 30px auto;
             max-width: 800px;
@@ -480,7 +406,6 @@
             border-radius: 10px;
             box-shadow: inset 0 0 40px rgba(217, 119, 6, 0.1);
             text-align: center;
-            position: relative;
         }
 
         .cert-header {
@@ -500,11 +425,7 @@
             text-decoration: underline;
         }
 
-        .cert-details {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            margin-bottom: 30px;
-        }
+        .cert-details { font-size: 1.2rem; line-height: 1.8; margin-bottom: 30px; }
 
         .cert-footer {
             display: flex;
@@ -516,7 +437,6 @@
             padding-top: 15px;
         }
 
-        /* الفوتر السفلي */
         footer {
             text-align: center;
             padding: 20px;
@@ -560,8 +480,9 @@
         <p class="welcome-text">
             أعزاءنا المعلمين والطلاب، نسعد بوجودكم في هذه المنصة التدريبية المخصصة لاختبارات نافس والترخيص المهني. لقد تم تصميم هذا النظام ليعمل بذكاء على فرز الأسئلة عشوائياً وتوليد 20 فقرة مخصصة في كل محاولة لدعم مهاراتكم وسد الفجوات التعليمية بكفاءة عالية واحترافية.
         </p>
+        <!-- تعديل المسمى هنا إلى مدير المجمع -->
         <div class="principal-signature">
-            قائد مجمع الأمير سلطان الابتدائي: أ. أحمد بن صالح المنمص
+            مدير مجمع الأمير سلطان الابتدائي: أ. أحمد بن صالح المنمص
         </div>
     </section>
 
@@ -581,7 +502,6 @@
 
         <div class="selection-panel" id="selection-panel">
             
-            <!-- إدخال اسم المختبر أولاً -->
             <div class="name-input-container">
                 <label for="tester-name"><i class="fa-solid fa-user-pen" style="color: var(--neon-green);"></i> اسم المختبر الثلاثي:</label>
                 <input type="text" id="tester-name" class="tester-name-input" placeholder="يرجى كتابة الاسم كاملاً لإصدار الشهادة عند الانتهاء...">
@@ -646,10 +566,9 @@
             </div>
         </div>
 
-        <!-- مساحة الأسئلة المحسنة بالتصحيح الفوري -->
         <div class="quiz-area" id="quiz-area">
             <div class="quiz-header">
-                <div class="quiz-info" id="quiz-title-display">اختبار نافس - مادة الرياضيات</div>
+                <div class="quiz-info" id="quiz-title-display">تحميل الاختبار...</div>
                 <div class="timer-box">
                     <i class="fa-regular fa-clock"></i>
                     <span id="timer-display">30:00</span>
@@ -670,14 +589,12 @@
             </div>
         </div>
 
-        <!-- لوحة عرض النتائج وإصدار الشهادة -->
         <div class="results-panel" id="results-panel">
             <i class="fa-solid fa-circle-check" style="font-size: 4.5rem; color: var(--neon-green);"></i>
             <h2 style="margin-top: 15px;">تم إنهاء محاكاة الاختبار بنجاح</h2>
-            <div class="results-score" id="results-score">18 / 20</div>
+            <div class="results-score" id="results-score">0 / 20</div>
             <p style="color: var(--accent-silver); margin-bottom: 25px;" id="results-feedback">أداء متميز وتدريب فعال مستمر نحو التميز الأكاديمي.</p>
             
-            <!-- الشهادة الرقمية المدمجة -->
             <div class="certificate-wrapper" id="certificate-view">
                 <div class="cert-header">🎓 شهادة إنجاز واجتياز رقمية 🎓</div>
                 <p>يشهد مجمع الأمير سلطان الابتدائي بأن المختبر الكريم / الكريمة:</p>
@@ -685,7 +602,7 @@
                 <p class="cert-details">
                     قد أتم بنجاح محاكاة الاختبار التقييمي التدريبي لـ: <br>
                     <strong id="cert-quiz-type" style="color: var(--gold);">اختبار نافس الوطني</strong> <br>
-                    وحصل على درجة نهائية مقدرها: <strong id="cert-final-score" style="color: #059669;">20/20</strong>
+                    وحصل على درجة نهائية مقدرها: <strong id="cert-final-score" style="color: #059669;">0 / 20</strong>
                 </p>
                 <div class="cert-footer">
                     <span>منصة التقييم الذكي الرقمية</span>
@@ -710,7 +627,6 @@
     </footer>
 
     <script>
-        // بنك الأسئلة الشامل
         const questionBank = {
             nafes: {
                 "3": {
@@ -730,17 +646,14 @@
                 "6": {
                     arabic: [
                         { q: "الفعل المضارع المعتل الآخر مما يلي هو:", o: ["يسعى", "يكتب", "يرسم", "يعمل"], a: 0 },
-                        { q: "الجملة التي اشتملت على فاعل مرفوع بالواو:", o: ["جاء المعلمون", "جاء المعلمُ", "جاء المعلمان", "رأيت المعلمين"], a: 0 },
-                        { q: "ما نوع الهمزة في كلمة (اسم)؟", o: ["همزة وصل", "همزة قطع", "همزة متوسطة", "همزة متطرفة"], a: 0 },
-                        { q: "حدد الجملة الصحيحة إملائياً:", o: ["قرأ الطالب كتاباً مفيداً", "قرا الطالب كتاب مفيد", "قراء الطالب كتابن مفيد", "قرأ الطالب كتابن مفيداً"], a: 0 }
+                        { q: "الجملة التي اشتملت على فاعل مرفوع بالواو:", o: ["جاء المعلمون", "جاء المعلمُ", "جاء المعلمان", "رأيت المعلمين"], a: 0 }
                     ],
                     math: [
                         { q: "ما هو القاسم المشترك الأكبر (ق.م.أ) للعددين 12 و 18؟", o: ["6", "3", "2", "36"], a: 0 },
                         { q: "أوجد ناتج الحسابية التالية: 4 × (5 + 2)؟", o: ["28", "22", "14", "40"], a: 0 }
                     ],
                     science: [
-                        { q: "ما هي أصغر وحدة بناء في المخلوق الحي؟", o: ["الخلية", "النسيج", "العضو", "الجهاز"], a: 0 },
-                        { q: "أي المجموعات التالية يمثل حيوانات فقارية؟", o: ["الأسماك والطيور", "الحشرات والديدان", "الإسفنجيات والرخويات", "قنديل البحر والسرطان"], a: 0 }
+                        { q: "ما هي أصغر وحدة بناء في المخلوق الحي؟", o: ["الخلية", "النسيج", "العضو", "الجهاز"], a: 0 }
                     ]
                 }
             },
@@ -757,12 +670,10 @@
                     { q: "أي الممارسات التالية تعكس الفهم العميق لمهارات التخطيط للتدريس؟", o: ["صياغة أهداف سلوكية قابلة للقياس والتقويم وتراعي الفروق الفردية", "استخدام أسلوب شرح موحد لجميع الطلاب دائماً", "تخطي التهيئة الحافزة للاستفادة من الوقت", "التركيز على الحفظ والاستظهار فقط"], a: 0 }
                 ],
                 advisor: [
-                    { q: "عند التعامل مع طالب يظهر تراجعاً مفاجئاً في المستوى التحصيلي، ما الخطوة الإرشادية الأولى؟", o: ["دراسة الحالة الفردية للطالب والبحث في الأسباب الأكاديمية والبيئية", "تحويل الطالب مباشرة إلى إدارة المدرسة للعقاب", "تجاهل المشكلة حتى تحل تلقائياً", "لوم الطالب وتوبيخه أمام الزملاء"], a: 0 },
-                    { q: "يهدف الإرشاد الوقائي بالدرجة الأولى إلى:", o: ["تقديم برامج توعوية لتفادي حدوث المشكلات السلوكية أو التعليمية مستقبلاً", "علاج الأزمات بعد تفاقمها مباشرة", "عزل الطلاب المشاغبين في فصول مستقلة", "معاقبة المقصرين دراسياً"], a: 0 }
+                    { q: "عند التعامل مع طالب يظهر تراجعاً مفاجئاً في المستوى التحصيلي، ما الخطوة الإرشادية الأولى؟", o: ["دراسة الحالة الفردية للطالب والبحث في الأسباب الأكاديمية والبيئية", "تحويل الطالب مباشرة إلى إدارة المدرسة للعقاب", "تجاهل المشكلة حتى تحل تلقائياً", "لوم الطالب وتوبيخه أمام الزملاء"], a: 0 }
                 ],
                 leadership: [
-                    { q: "أي من الأساليب القيادية يعتمد على إشراك منسوبي المدرسة في اتخاذ القرار وبناء الرؤية المشتركة؟", o: ["القيادة التشاركية (الديمقراطية)", "القيادة الأوتوقراطية (المتسلطة)", "القيادة الفوضوية (الحرة)", "القيادة الإجرائية التقليدية"], a: 0 },
-                    { q: "تعتبر تهيئة بيئة العمل التعليمية المحفزة من المهام الأساسية لـ:", o: ["مدير المدرسة كقائد تربوي ملهم وميسر للعملية التعليمية", "الشركات الخارجية فقط", "أولياء الأمور بمفردهم", "الطلاب أثناء الفسحة الدراسية فقط"], a: 0 }
+                    { q: "أي من الأساليب القيادية يعتمد على إشراك منسوبي المدرسة في اتخاذ القرار وبناء الرؤية المشتركة؟", o: ["القيادة التشاركية (الديمقراطية)", "القيادة الأوتوقراطية (المتسلطة)", "القيادة الفوضوية (الحرة)", "القيادة الإجرائية التقليدية"], a: 0 }
                 ]
             }
         };
@@ -772,7 +683,6 @@
         let selectedSubject = 'arabic';
         let generatedQuestions = [];
         let currentQuestionIndex = 0;
-        let userAnswers = {};
         let quizTimer;
         let timeRemaining = 1800;
         let isQuestionAnswered = false;
@@ -825,7 +735,7 @@
             } else {
                 document.getElementById('nafes-flow').classList.add('hidden');
                 document.getElementById('license-flow').classList.remove('hidden');
-                selectLicenseSubject('general');
+                selectLicenseSubject('general'); 
             }
         }
 
@@ -851,7 +761,7 @@
                 const el = document.getElementById(`lic-${id}`);
                 if (el) el.classList.toggle('selected', id === subId);
             });
-            selectedSubject = subId;
+            selectedSubject = subId; 
         }
 
         function buildQuizQuestions() {
@@ -864,9 +774,9 @@
 
             const totalRequired = 20;
             const extraPool = [
+                { q: "وفق النظريات التربوية الحديثة، يرتكز التعليم المتميز على جعل الطالب هو:", o: ["محور العملية التعليمية والنشط دائماً", "المستمع السلبي فقط", "الناقل للمعلومة دون فهم", "المستظهر للأجوبة النموذجية"], a: 0 },
                 { q: "أي المهارات الأكاديمية التالية تتطلب التمرن المستمر والمتابعة الذاتية للتفوق بها؟", o: ["التفكير الناقد وحل المشكلات", "الحفظ المجرد", "القراءة السريعة غير الموجهة", "الاستماع السلبي"], a: 0 },
-                { q: "تُعد مهارة التحليل والربط اللغوي أساساً في:", o: ["الفهم القرائي والتعبير", "تصنيف الأرقام الفردية", "تنفيذ التجارب المعملية فقط", "رسم الأشكال الهندسية"], a: 0 },
-                { q: "إحدى الأدوات التقييمية الهامة التي تسهم في تطوير المستوى العلمي للطالب هي:", o: ["الاختبارات التشخيصية المستمرة", "التلقين الميكانيكي للأجوبة", "تأجيل التغذية الراجعة", "إلغاء التقييم المستمر"], a: 0 }
+                { q: "تُعد مهارة التحليل والربط أساساً في تطوير مستويات:", o: ["الفهم العميق والتطبيق العملي للمفاهيم", "تصنيف الأرقام الفردية عشوائياً", "تنفيذ الأوامر التقليدية فقط", "تأجيل التغذية الراجعة"], a: 0 }
             ];
 
             while(baseQuestions.length < totalRequired) {
@@ -890,7 +800,6 @@
 
             generatedQuestions = buildQuizQuestions();
             currentQuestionIndex = 0;
-            userAnswers = {};
             score = 0;
             timeRemaining = 1800; 
 
@@ -900,7 +809,7 @@
             document.getElementById('results-panel').style.display = 'none';
             document.getElementById('quiz-area').style.display = 'block';
 
-            let typeDisplay = currentCategory === 'nafes' ? `اختبار نافس - الصف (${selectedGrade})` : `اختبار رخصة مهنية`;
+            let typeDisplay = currentCategory === 'nafes' ? `اختبار نافس - الصف (${selectedGrade})` : `اختبار الرخصة المهنية - مسار التدريب`;
             document.getElementById('quiz-title-display').innerText = typeDisplay;
 
             showQuestion();
@@ -949,25 +858,24 @@
             document.getElementById('progress-bar').style.width = `${progress}%`;
         }
 
-        // آلية التصحيح الفوري وتجميد وتأمين الخيارات [source: 1]
         function selectOption(selectedIdx, element) {
-            if(isQuestionAnswered) return; // تجميد ومنع التعديل بعد الضغط الأول [source: 1]
+            if(isQuestionAnswered) return; 
             
             isQuestionAnswered = true;
             const currentQ = generatedQuestions[currentQuestionIndex];
             const allItems = document.querySelectorAll('.option-item');
 
             allItems.forEach((item, idx) => {
-                item.classList.add('locked'); // تجميد حركة الماوس كلياً [source: 1]
+                item.classList.add('locked');
                 if(idx === currentQ.a) {
-                    item.classList.add('correct-ans'); // إظهار الإجابة الصحيحة فوراً [source: 1]
+                    item.classList.add('correct-ans'); 
                 }
             });
 
             if(selectedIdx === currentQ.a) {
                 score++;
             } else {
-                element.classList.add('wrong-ans'); // تمييز الإجابة الخاطئة باللون الأحمر [source: 1]
+                element.classList.add('wrong-ans'); 
             }
 
             const nextBtn = document.getElementById('next-btn');
@@ -995,7 +903,6 @@
 
             document.getElementById('results-score').innerText = `${score} / 20`;
             
-            // تعبئة بيانات الشهادة بدقة [source: 1]
             const name = document.getElementById('tester-name').value.trim();
             document.getElementById('cert-user-name').innerText = name;
             document.getElementById('cert-final-score').innerText = `${score} / 20`;
